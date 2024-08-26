@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -22,5 +31,16 @@ export class UserController {
     console.log('User COntrollerrr: ');
 
     return this.useService.createUser(user);
+  }
+
+  @Put(':id')
+  update(@Param('id') userId: string, @Body() user: UpdateUserDto) {
+    user.id = userId;
+    return this.useService.updateUser(user);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') userId: string) {
+    return this.useService.delete(userId);
   }
 }

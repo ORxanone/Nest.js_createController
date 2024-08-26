@@ -10,7 +10,7 @@ import {
 @Entity()
 export class User {
   @Column()
-  @PrimaryColumn()
+  @PrimaryColumn() 
   id: string;
 
   @Column()
@@ -23,7 +23,7 @@ export class User {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updateAt!: Date;
+  updatedAt!: Date;
 
   @DeleteDateColumn()
   deletedAt!: Date;
