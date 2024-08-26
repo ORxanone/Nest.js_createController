@@ -11,8 +11,8 @@ export class AppController {
   }
 
   @Post()
-  create(@Body() body: any): string{
-    console.log("qaqa salaaaaam")
-    return this.appService.create(body); 
+  create(@Body() body: any): string {
+    console.log('qaqa salaaaaam');
+    return this.appService.create(body);
   }
 }
