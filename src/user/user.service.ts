@@ -23,6 +23,7 @@ export class UserService {
     newUser.id = uuidv4();
     newUser.email = user.email;
     newUser.name = user.name;
+    newUser.birthDay = user.birthDay;
 
     await this.userRepository.save(newUser);
 
@@ -38,6 +39,7 @@ export class UserService {
     if (exitUser) {
       exitUser.email = user.email;
       exitUser.name = user.name;
+      exitUser.birthDay = user.birthDay;
     } else {
       throw new Error('No such user ');
     }

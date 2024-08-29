@@ -10,7 +10,7 @@ import {
 @Entity()
 export class User {
   @Column()
-  @PrimaryColumn() 
+  @PrimaryColumn()
   id: string;
 
   @Column()
@@ -18,6 +18,9 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column({ nullable: true })
+  birthDay!: Date;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -28,8 +28,6 @@ export class UserController {
     type: CreateUserDto,
   })
   createUser(@Body() user: CreateUserDto) {
-    console.log('User COntrollerrr: ');
-
     return this.useService.createUser(user);
   }
 
