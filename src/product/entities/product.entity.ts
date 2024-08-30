@@ -1,5 +1,6 @@
 import { MainBaseEntity } from 'src/entities/main.base.entity';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Product extends MainBaseEntity {
@@ -8,4 +9,7 @@ export class Product extends MainBaseEntity {
 
   @Column()
   name: string;
+
+  @ManyToOne(() => User, (user) => user.products)
+  user: User;
 }
