@@ -14,7 +14,7 @@ export class ProductService {
   ) {}
 
   async all() {
-    return await this.productRepository.find();
+    return this.productRepository.find();
   }
 
   async createProduct(product: CreateProductDto) {
@@ -40,10 +40,10 @@ export class ProductService {
       throw new Error('No such a Product');
     }
 
-    return await this.productRepository.save(exitProduct);
+    return this.productRepository.save(exitProduct);
   }
 
   async deleteProduct(productId: string) {
-    return await this.productRepository.softDelete(productId);
+    return this.productRepository.softDelete(productId);
   }
 }
