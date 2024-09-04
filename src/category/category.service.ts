@@ -4,6 +4,8 @@ import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { CategoryCreateDto } from './dto/category-create.dto';
 import { CategoryUpdateDto } from './dto/category-updatte.dto';
+import { isDefined } from 'class-validator';
+import { CategoryNotFoundException } from 'src/common/exceptions/category.notFound.exeption';
 
 @Injectable()
 export class CategoryService {
@@ -27,12 +29,16 @@ export class CategoryService {
     const exitCtg = await this.ctgRepo.findOne({
       where: { id: ctg.id },
     });
-    if (exitCtg) {
-      exitCtg.name = ctg.name;
-    } else {
-      throw new Error('No such a Category!');
-    }
 
-    return await this.ctgRepo.save(exitCtg);
+    if (isDefined(exitCtg)) {
+      exitCtg.name = ctg.name;
+      return await this.ctgRepo.save(exitCtg);
+    } else {
+      throw new CategoryNotFoundException(ctg.id);
+    }
+  }
+
+  async delete(ctgId: string) {
+    return await this.ctgRepo.softDelete(ctgId);
   }
 }

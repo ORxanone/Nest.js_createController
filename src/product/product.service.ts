@@ -5,6 +5,8 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './entities/product.entity';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { User } from 'src/user/entities/user.entity';
+import { isDefined } from 'class-validator';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class ProductService {
@@ -14,7 +16,37 @@ export class ProductService {
   ) {}
 
   async all() {
-    return this.productRepository.find();
+    return this.productRepository.find({
+      where: {},
+      relations: ['user', 'category'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
+  async byUserId(userId: string) {
+    return await this.productRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
+
+  async byProductId(productId: string) {
+    const res = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    return res;
+  }
+
+  async byCategoryId(catId: string) {
+    const res = await this.productRepository.find({
+      where: { categoryId: catId },
+      relations: ['user'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+    return res;
   }
 
   async createProduct(product: CreateProductDto) {
@@ -24,6 +56,8 @@ export class ProductService {
     newProduct.name = product.name;
     newProduct.user = new User();
     newProduct.user.id = product.userId;
+    newProduct.category = new Category();
+    newProduct.category.id = product.categoryId;
     const result = await this.productRepository.save(newProduct);
     console.log(result);
     return result;
@@ -34,16 +68,25 @@ export class ProductService {
       where: { id: product.id },
     });
 
-    if (exitProduct) {
+    // 1- st Solution
+
+    // if (exitProduct) {
+    //   exitProduct.name = product.name;
+    // } else {
+    //   throw new Error('No such a Product');
+    // }
+
+    // 2- nd Solutions (with iDefined fc class-validator )
+
+    if (isDefined(exitProduct)) {
       exitProduct.name = product.name;
+      return this.productRepository.save(exitProduct);
     } else {
       throw new Error('No such a Product');
     }
-
-    return this.productRepository.save(exitProduct);
   }
 
   async deleteProduct(productId: string) {
-    return this.productRepository.softDelete(productId);
+    return await this.productRepository.softDelete(productId);
   }
 }

@@ -13,6 +13,12 @@ export class CreateProductDto {
     example: 'User Id',
   })
   userId: string;
+
+  @IsString()
+  @ApiProperty({
+    example: 'Category Id',
+  })
+  categoryId: string;
 }
 
 //c9485465-daee-40af-94cf-d636a02264af
